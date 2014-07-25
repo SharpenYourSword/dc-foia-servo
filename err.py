@@ -12,22 +12,22 @@ import subprocess
 
 dl = os.getcwd() + "/files/"
 
-def download_file(url, cookiedict, fname, ftype):	
-    local_filename = "files/" + fname + "." + ftype
-    if (os.path.exists(local_filename)):
-        return local_filename
-    else:
-	    viewstate = cookiedict["ASP.NET_SessionId"] + "_3"
-	    new_url = "https://foia-dc.gov/ERR/palEleViewDocs.aspx?__EVENTTARGET=&__EVENTARGUMENT=&__LASTFOCUS=&CUSTOMVIEWSTATE_KEY=VIEWSTATE_" + viewstate + "&__VIEWSTATE=&pageno=1&relpath=&hiddocid=&hidisPalDoc=F&hidDocTypes=3%2C4%2C5%2C66%2C6%2C7%2C8%2C9%2C10%2C11%2C12%2C13%2C14%2C15%2C16%2C17%2C18%2C19%2C20%2C21%2C22%2C23%2C64%2C24%2C25%2C26%2C27%2C28%2C29%2C30%2C31%2C32%2C33%2C34%2C35%2C36%2C37%2C38%2C39%2C40%2C41%2C68%2C69%2C74%2C70%2C72%2C73%2C71%2C42%2C43%2C44%2C45%2C46%2C47%2C48%2C49%2C50%2C51%2C52%2C53%2C54%2C55%2C56%2C57%2C58%2C59%2C60%2C61%2C62%2C63%2C78%2C79&txtDocName=*&txtContent=&hidflg=Y&txtFrom=&txtTo=&pgNo=1&hidsrt=0&hidsrtfield=2&hidNoMoreVisibility=True&hiderrid=" + fname
-	    try:
-		    r = requests.post(new_url, cookies=cookiedict, stream=True, timeout=1.001)
-		    with open(local_filename, 'wb') as fd:
-			    for chunk in r.iter_content(chunk_size=4096):
-			        fd.write(chunk)
-			    fd.write(r.raw.read())
-	    except Timeout:
-	        print "huh?"
-    return local_filename
+def download_file(url, cookiedict, fname, ftype):
+	local_filename = "files/" + fname + "." + ftype
+	if (os.path.exists(local_filename)):
+		return local_filename
+	else:
+		viewstate = cookiedict["ASP.NET_SessionId"] + "_3"
+		new_url = "https://foia-dc.gov/ERR/palEleViewDocs.aspx?__EVENTTARGET=&__EVENTARGUMENT=&__LASTFOCUS=&CUSTOMVIEWSTATE_KEY=VIEWSTATE_" + viewstate + "&__VIEWSTATE=&pageno=1&relpath=&hiddocid=&hidisPalDoc=F&hidDocTypes=3%2C4%2C5%2C66%2C6%2C7%2C8%2C9%2C10%2C11%2C12%2C13%2C14%2C15%2C16%2C17%2C18%2C19%2C20%2C21%2C22%2C23%2C64%2C24%2C25%2C26%2C27%2C28%2C29%2C30%2C31%2C32%2C33%2C34%2C35%2C36%2C37%2C38%2C39%2C40%2C41%2C68%2C69%2C74%2C70%2C72%2C73%2C71%2C42%2C43%2C44%2C45%2C46%2C47%2C48%2C49%2C50%2C51%2C52%2C53%2C54%2C55%2C56%2C57%2C58%2C59%2C60%2C61%2C62%2C63%2C78%2C79&txtDocName=*&txtContent=&hidflg=Y&txtFrom=&txtTo=&pgNo=1&hidsrt=0&hidsrtfield=2&hidNoMoreVisibility=True&hiderrid=" + fname
+		try:
+			r = requests.post(new_url, cookies=cookiedict, stream=True, timeout=1.001)
+			with open(local_filename, 'wb') as fd:
+				for chunk in r.iter_content(chunk_size=4096):
+					fd.write(chunk)
+				fd.write(r.raw.read())
+		except Timeout:
+			print "huh?"
+	return local_filename
 
 def parse_rows(rows):
 	out = []
