@@ -1,4 +1,4 @@
-$.getJSON("https://gist.githubusercontent.com/vzvenyach/046bebf697efce97f651/raw/b4debd07678d2bcaf0fe144e454f0007bbbe9696/dcfoia.json", function (d) {
+$.getJSON("https://s3.amazonaws.com/dcfoiaservo/foia.json", function (d) {
   var out = "<h2>FOIA Responses</h2><dl>";
     for (var i in d) {
       var description = d[i].name;
