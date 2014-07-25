@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 import os
 import re
+from pyvirtualdisplay import Display
 import requests
 from requests.exceptions import Timeout
 import json
@@ -52,6 +53,9 @@ def parse_rows(rows):
 			break
 		i += 1
 	return out
+
+display = Display(visible=0, size=(800, 600))
+display.start()
 
 driver = webdriver.Firefox()
 link = "https://foia-dc.gov/ERR/palEleScrRslts.aspx"
