@@ -2,3 +2,4 @@ selenium
 requests
 pyvirtualdisplay
 boto
+python-twitter
