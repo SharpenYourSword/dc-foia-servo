@@ -38,7 +38,11 @@ def download_file(url, cookiedict, fname, ftype, description):
 			with open(local_filename, 'wb') as fd:
 				for chunk in r.iter_content(chunk_size=4096):
 					fd.write(chunk)
-			#When you're here, it's time to tweet about it!
+
+			# convert it to a json object
+			done = subprocess.call(["node bin/reports.js -f " + local_filename + " -o json/" + fname + ".json"], shell=True)
+			
+			# When you're here, it's time to tweet about it!
 			tweetIt(description, fname, ftype)
 
 		except Timeout:
@@ -93,6 +97,7 @@ while (still_more):
 	out += objs
 	for obj in objs:
 		f = download_file("https://foia-dc.gov/Request/palContentType.aspx?type=3&DocID=" + obj["fname"] + "&isPALDoc=F", cookies, obj["fname"], obj["ftype"], obj["name"])
+
 	try:
 		next_pg = driver.find_element_by_xpath('//*[@id="image15"]')
 		next_pg.click()

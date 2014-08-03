@@ -17,3 +17,8 @@ for fn in os.listdir(pwd + "/files/"):
 	if (b.get_key(fn) == None):
 		k = b.new_key(fn)
 		k.set_contents_from_filename('files/' + fn)
+
+for fn in os.listdir(pwd + "/json/"):
+	if (b.get_key("json/" + fn) == None):
+		k = b.new_key("json/" + fn)
+		k.set_contents_from_filename('json/' + fn)
