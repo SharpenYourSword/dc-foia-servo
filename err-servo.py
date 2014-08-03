@@ -40,19 +40,32 @@ def download_file(url, cookiedict, fname, ftype, description, pub_date):
 					fd.write(chunk)
 
 			# convert it to a json object
-			done = subprocess.call(["node bin/reports.js -f " + local_filename + " -o json/" + fname + ".json"], shell=True)
-			
-			# Take existing metadata and file and add it all together
-			f = open("json/" + fname + ".json")
-			d = json.load(f)
-			f.close()
-			with open("json/" + fname + ".json", 'wb') as jsonobj:
-				d["fname"] = fname
-				d["description"] = description
-				d["ftype"] = ftype
-				d["pub"] = pub_date
-				d["url"] = "https://s3.amazonaws.com/dcfoiaservo/" + fname + "." + ftype
-				jsonobj.write(json.dumps(d, indent=4))
+			if ftype == "pdf":
+				try:
+					done = subprocess.call(["node bin/reports.js -f " + local_filename + " -o json/" + fname + ".json"], shell=True)
+					
+					# Take existing metadata and file and add it all together
+					f = open("json/" + fname + ".json")
+					d = json.load(f)
+					f.close()
+					with open("json/" + fname + ".json", 'wb') as jsonobj:
+						d["fname"] = fname
+						d["description"] = description
+						d["ftype"] = ftype
+						d["pub"] = pub_date
+						d["filename"] = "https://s3.amazonaws.com/dcfoiaservo/" + fname + "." + ftype
+						jsonobj.write(json.dumps(d, indent=4))
+				except:
+					pass
+			else:
+				with open("json/" + fname + ".json", 'wb') as jsonobj:
+					d = {}
+					d["fname"] = fname
+					d["description"] = description
+					d["ftype"] = ftype
+					d["pub"] = pub_date
+					d["filename"] = "https://s3.amazonaws.com/dcfoiaservo/" + fname + "." + ftype
+					jsonobj.write(json.dumps(d, indent=4))
 
 			# When you're here, it's time to tweet about it!
 			tweetIt(description, fname, ftype)
