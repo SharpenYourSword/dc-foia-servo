@@ -24,7 +24,7 @@ def checkNewFile(fname):
 			return False	# File already exists!
 	return True
 
-def download_file(url, cookiedict, fname, ftype, description):
+def download_file(url, cookiedict, fname, ftype, description, pub_date):
 
 	local_filename = "files/" + fname + "." + ftype
 	if (os.path.exists(local_filename)):
@@ -42,11 +42,23 @@ def download_file(url, cookiedict, fname, ftype, description):
 			# convert it to a json object
 			done = subprocess.call(["node bin/reports.js -f " + local_filename + " -o json/" + fname + ".json"], shell=True)
 			
+			# Take existing metadata and file and add it all together
+			f = open("json/" + fname + ".json")
+			d = json.load(f)
+			f.close()
+			with open("json/" + fname + ".json", 'wb') as jsonobj:
+				d["fname"] = fname
+				d["description"] = description
+				d["ftype"] = ftype
+				d["pub"] = pub_date
+				d["url"] = "https://s3.amazonaws.com/dcfoiaservo/" + fname + "." + ftype
+				jsonobj.write(json.dumps(d, indent=4))
+
 			# When you're here, it's time to tweet about it!
 			tweetIt(description, fname, ftype)
 
 		except Timeout:
-			print "huh?"
+			print "huh? the download timed out"
 	return local_filename
 
 def parse_rows(rows):
@@ -96,8 +108,7 @@ while (still_more):
 
 	out += objs
 	for obj in objs:
-		f = download_file("https://foia-dc.gov/Request/palContentType.aspx?type=3&DocID=" + obj["fname"] + "&isPALDoc=F", cookies, obj["fname"], obj["ftype"], obj["name"])
-
+		f = download_file("https://foia-dc.gov/Request/palContentType.aspx?type=3&DocID=" + obj["fname"] + "&isPALDoc=F", cookies, obj["fname"], obj["ftype"], obj["name"], obj["pub"])
 	try:
 		next_pg = driver.find_element_by_xpath('//*[@id="image15"]')
 		next_pg.click()
