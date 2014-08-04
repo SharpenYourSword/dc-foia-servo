@@ -16,7 +16,6 @@ function run(filename, output) {
 		getTextFromPdf(filename, function (textString)
 		{
 			data['text'] = textString
-			data['filename'] = filename
 			if (output == null) {
 				console.log(JSON.stringify(data, indent=2))
 			}
