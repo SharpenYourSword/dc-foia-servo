@@ -1,13 +1,13 @@
 $.getJSON("https://s3.amazonaws.com/dcfoiaservo/foia.json", function (d) {
-  var out = "<h2>FOIA Responses</h2><dl>";
+  var out = "<h2>FOIA Responses</h2><ul>";
     for (var i in sortObject(d,"pub",false)) {
       var description = d[i].name;
 //      var file = d[i].fname + "." + d[i].ftype
       var file = d[i].fname
-      var url = "http://code.esq.io/dc-foia-servo/response.html#" + file
-      out += '<dt>' + description + '</dt><dd><a href="' + url + '">' + file + '</a></dd><p/>';
+      var url = "response.html#" + file
+      out += '<li><a href="' + url + '">' + description + '</a> ' + d[i].pub + '</dt></li>';
     }
-    out += '</dl>';
+    out += '</ul>';
     document.getElementById("foialist").innerHTML=out;
 
 })
