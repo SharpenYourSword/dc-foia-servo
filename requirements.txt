@@ -3,3 +3,5 @@ requests
 pyvirtualdisplay
 boto
 python-twitter
+flask
+gunicorn
