@@ -8,5 +8,5 @@ def tweetIt (description, fname, ftype):
 		description = description[:99]
 #	out_text = "New posting: " + description[:99] + " https://s3.amazonaws.com/dcfoiaservo/" + fname + "." + ftype
 #	When we've converted existing PDFs to JSON, then turn this on!
-	out_text = "New posting: " + description[:99] + " http://code.esq.io/dc-foia-servo/response#" + fname
+	out_text = "New posting: " + description[:99] + " http://dc-foia-servo.herokuapp.com/response/" + fname
 	status = api.PostUpdate(out_text)
