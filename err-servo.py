@@ -10,6 +10,7 @@ from requests.exceptions import Timeout
 import json
 import subprocess
 from twitterservo import tweetIt
+from esmongoify import pushtoDBstores
 #import tweetaboutit
 
 dl = os.getcwd() + "/files/"
@@ -70,6 +71,7 @@ def download_file(url, cookiedict, fname, ftype, description, pub_date, pages, s
 					jsonobj.write(json.dumps(d, indent=4))
 
 			# When you're here, it's time to tweet about it!
+			pushtoDBstores("json/" + fname + ".json")
 			tweetIt(description, fname, ftype)
 
 		except Timeout:
